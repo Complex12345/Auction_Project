@@ -11,11 +11,11 @@ export const registerUser = (data: {
     username: string;
     email: string;
     password: string;
-}) => api.post("/v1/signup", data);
+}) => api.post("/user/v1/signup", data);
 
 export const loginUser = (data: {
     email: string;
     password: string;
-}) => api.post("/v1/login", data);
+}) => api.post("/user/v1/login", data);
 
 export default api;
