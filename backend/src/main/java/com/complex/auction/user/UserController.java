@@ -1,5 +1,6 @@
 package com.complex.auction.user;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/v1/signup", consumes = "application/json")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody User user) {
         User createdUser = userService.saveUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }

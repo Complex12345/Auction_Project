@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // reuse the bean
                 .authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/user/v1/signup", "/user/v1/login").permitAll()
+                        .requestMatchers("/user/v1/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
