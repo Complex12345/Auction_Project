@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -57,10 +58,12 @@ public class UserService {
         if (currentUser.isEmpty())
             throw new UsernameNotFoundException("User not found: " + currentUser);
 
-        User changeduser = currentUser.get();
-        changeduser.setUsername(newUsername);
+        User userToUpdate = currentUser.get();
+        userToUpdate.setUsername(newUsername);
 
-        return userRepository.save(changeduser);
+        userToUpdate.setLastUpdated(LocalDateTime.now());
+
+        return userRepository.save(userToUpdate);
     }
 
     public User updatePassword(String username, String newPassword) {
@@ -71,9 +74,10 @@ public class UserService {
 
 
         User userToUpdate = currentUser.get();
-
         String encryptedPassword = passwordEncoder.encode(newPassword);
         userToUpdate.setPassword(encryptedPassword);
+
+        userToUpdate.setLastUpdated(LocalDateTime.now());
 
         return userRepository.save(userToUpdate);
     }
