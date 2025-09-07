@@ -3,6 +3,8 @@ package com.complex.auction.user;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,6 +16,19 @@ public class User {
     private String email;
     @Size(min = 5, max = 25, message = "Password must be between 3 and 25 characters ")
     private String password;
+    private LocalDateTime accountCreated;
+
+    public User(String email, Long id, String password, String username) {
+        this.email = email;
+        this.id = id;
+        this.password = password;
+        this.username = username;
+        accountCreated = LocalDateTime.now();
+    }
+
+    public User() {
+
+    }
 
     public String getEmail() {
         return email;
@@ -45,5 +60,13 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public LocalDateTime getAccountCreated() {
+        return accountCreated;
+    }
+
+    public void setAccountCreated(LocalDateTime accountCreated) {
+        this.accountCreated = accountCreated;
     }
 }

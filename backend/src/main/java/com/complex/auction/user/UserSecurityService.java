@@ -16,16 +16,15 @@ public class UserSecurityService implements org.springframework.security.core.us
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findUserByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Optional<User> user = userRepository.findUserByEmail(email);
 
-        if(user.isEmpty()) throw new UsernameNotFoundException(username);
+        if(user.isEmpty()) throw new UsernameNotFoundException("User not found with email: " + email);
 
         User foundUser = user.get();
         return org.springframework.security.core.userdetails.User
                 .builder()
-                .username(foundUser.getUsername())
+                .username(foundUser.getEmail())
                 .password(foundUser.getPassword())
                 .build();
     }
