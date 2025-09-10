@@ -1,0 +1,68 @@
+.center {
+  text-align: center;
+}
+
+.container {
+    padding: 40px;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    max-width: 400px;
+
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    text-align: center;
+
+    margin-top: 150px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.form-layout {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 20px
+}
+
+.container-name {
+    font-size: 40px;
+}
+
+.container-input {
+    border-radius: 100px;
+    margin-top: 16px;
+    width: 300px;
+
+    font-weight: bold;
+    font-size: 14px;
+    padding: 14px 16px;
+
+    transition: background-color 0.2s ease;
+
+}
+
+.container-button {
+    background: #026bff;
+    color: white;
+
+    border-radius: 100px;
+
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.button-pressed {
+
+}
+
+
+
+
+
+

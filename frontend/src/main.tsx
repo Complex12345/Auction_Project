@@ -1,14 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route} from 'react-router-dom';
 import { RegistrationPage } from './components/RegistrationPage';
 import './style.css';
+import {NavigationBar} from "./components/NavigationBar.tsx";
+import {LoginPage} from "./components/LoginPage.tsx";
 
 const rootElement = document.getElementById('app');
 
 if (rootElement) {
     ReactDOM.createRoot(rootElement).render(
         <React.StrictMode>
-            <RegistrationPage />
+            <BrowserRouter>
+                <NavigationBar/>
+                <Routes>
+                    <Route path={"/"} element={<RegistrationPage/>}/>
+                    <Route path={"/login"} element={<LoginPage/>}/>
+                </Routes>
+            </BrowserRouter>
         </React.StrictMode>
     );
 } else {

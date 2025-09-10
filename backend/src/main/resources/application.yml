@@ -3,6 +3,7 @@ server:
     include-message: always
     include-binding-errors: always
 
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/User
@@ -16,3 +17,5 @@ spring:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  profiles:
+    active: Dev

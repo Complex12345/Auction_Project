@@ -20,7 +20,7 @@ public class User {
 
     private String email;
 
-    @Size(min = 5, max = 25, message = "Password must be between 3 and 25 characters ")
+    @Size(min = 5, message = "Password must be between 5 and 25 characters ")
     private String password;
 
     private LocalDateTime accountCreated;

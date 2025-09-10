@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Table(name = "item")
 @Entity
@@ -29,6 +30,11 @@ public class Item {
     private Double startingBid;
     private Double currentBid;
 
+    @Transient
+    private AtomicInteger inMemViews = new AtomicInteger(0);
+
+    private int views = 0;
+
     @ManyToOne
     @JoinColumn(name = "seller_id", nullable = false)
     @NotNull
@@ -48,6 +54,7 @@ public class Item {
         this.name = name;
         this.seller = seller;
         this.startingBid = startingBid;
+
     }
 
     public Double getStartingBid() {
@@ -128,5 +135,14 @@ public class Item {
 
     public Long getId() {
         return id;
+    }
+
+    public int getViews() {
+        return inMemViews.get();
+    }
+
+
+    public synchronized void incrementView(){
+        inMemViews.incrementAndGet();
     }
 }
