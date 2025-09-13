@@ -14,7 +14,7 @@ if (rootElement) {
             <BrowserRouter>
                 <NavigationBar/>
                 <Routes>
-                    <Route path={"/"} element={<RegistrationPage/>}/>
+                    <Route path={"/register"} element={<RegistrationPage/>}/>
                     <Route path={"/login"} element={<LoginPage/>}/>
                 </Routes>
             </BrowserRouter>

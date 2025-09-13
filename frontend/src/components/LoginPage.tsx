@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {loginUser} from "../api/UserApi.ts";
-
+import '../css/RegistrationAndLoginPage.css'
 
 export function LoginPage(){
     const [email, setEmail] = useState("")
@@ -30,13 +30,15 @@ export function LoginPage(){
 
     return (
         <div>
-            <h2>Register</h2>
-            <form onSubmit={sendRequest}>
-                <input value={email}    onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="email" />
-                <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="password" />
-                <button type="submit">{isLoading ? "Logging In..." : "Logged In"}</button>
-            </form>
-            <p>{message}</p>
+            <div className={"container"}>
+                <h2>Login</h2>
+                <form className={"form-layout"} onSubmit={sendRequest}>
+                    <input className={"container-input"} value={email}    onChange={(e) => setEmail(e.target.value)} placeholder="Your email" type="email" />
+                    <input className={"container-input"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" type="password" />
+                    <button className={"container-button"} type="submit">{isLoading ? "Signing Up..." : "Sign Up"}</button>
+                </form>
+                <p>{message}</p>
+            </div>
         </div>
     )
 

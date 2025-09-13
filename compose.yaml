@@ -1,10 +1,37 @@
 version: '3.8'
+
 services:
-  db:
-    image: postgres:17
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: User
+  backend:
+    build: ./backend
+    container_name: auction-backend
     ports:
-      - "5432:5432"
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: myuser
+      SPRING_DATASOURCE_PASSWORD: mypassword
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    container_name: auction-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    restart: always
+
+  db:
+    image: postgres:17-alpine
+    container_name: auction-postgresql-database
+    restart: always
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

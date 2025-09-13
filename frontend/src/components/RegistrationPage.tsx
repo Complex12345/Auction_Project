@@ -1,7 +1,7 @@
 import React from "react";
 import {useState} from "react"
 import {registerUser} from "../api/UserApi.ts";
-import '../css/RegistrationPage.css';
+import '../css/RegistrationAndLoginPage.css';
 
 export function RegistrationPage(): React.ReactElement{
     const [username, setUsername]= useState<string>("");
