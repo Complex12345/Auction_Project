@@ -30,9 +30,8 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Item> itemsListed;
 
-    public User(String email, Long id, String password, String username) {
+    public User(String email, String username, String password) {
         this.email = email;
-        this.id = id;
         this.password = password;
         this.username = username;
         accountCreated = LocalDateTime.now();

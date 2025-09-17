@@ -1,6 +1,7 @@
 package com.complex.auction.user;
 
 import com.complex.auction.dto.LoginRequest;
+import com.complex.auction.dto.RegistrationRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +24,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/v1/signup", consumes = "application/json")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody User user) {
-        User createdUser = userService.saveUser(user);
+    public ResponseEntity<User> registerUser(@Valid @RequestBody RegistrationRequest registrationRequest) {
+        User createdUser = userService.saveUser(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

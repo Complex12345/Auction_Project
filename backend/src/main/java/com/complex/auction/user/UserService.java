@@ -1,6 +1,7 @@
 package com.complex.auction.user;
 
 
+import com.complex.auction.dto.RegistrationRequest;
 import com.complex.auction.exceptions.EmailAlreadyFoundException;
 import com.complex.auction.exceptions.UsernameAlreadyFoundException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.Optional;
 
 @Service
@@ -21,15 +23,20 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(User user) {
+    public User saveUser(RegistrationRequest registrationRequest) {
 
-        if (findUsernameExists(user.getUsername()))
-            throw new UsernameAlreadyFoundException(user.getUsername() + " is taken");
-        if (findEmailExists(user.getEmail()))
-            throw new EmailAlreadyFoundException(user.getEmail() + " is taken");
+        if (findUsernameExists(registrationRequest.username()))
+            throw new UsernameAlreadyFoundException(registrationRequest.username() + " is taken");
+        if (findEmailExists(registrationRequest.email()))
+            throw new EmailAlreadyFoundException(registrationRequest.email() + " is taken");
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User registerUser = new User(
+                registrationRequest.email(),
+                registrationRequest.username(),
+                passwordEncoder.encode(registrationRequest.password())
+        );
+
+        return userRepository.save(registerUser);
     }
 
     public boolean findEmailExists(String email) {

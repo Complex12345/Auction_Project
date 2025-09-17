@@ -24,7 +24,7 @@ public class Item {
     private LocalDateTime auctionEndTime;
     private String imageUrl;
     private String category;
-    private String condition;
+    private String condition;  //condition based on quality, example  : Good, fair, bad condition
 
     @NotNull(message = "Must have a stating bid")
     private Double startingBid;

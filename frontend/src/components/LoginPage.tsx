@@ -19,7 +19,7 @@ export function LoginPage(){
         try {
             await loginUser({email, password})
             setMessage("Login in Successful Redirecting...")
-            console.log("registered user with email: " + email)
+            console.log("Logging in user with email: " + email)
         }
         catch (error) {
             setMessage("Login in failed")
@@ -35,7 +35,7 @@ export function LoginPage(){
                 <form className={"form-layout"} onSubmit={sendRequest}>
                     <input className={"container-input"} value={email}    onChange={(e) => setEmail(e.target.value)} placeholder="Your email" type="email" />
                     <input className={"container-input"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" type="password" />
-                    <button className={"container-button"} type="submit">{isLoading ? "Signing Up..." : "Sign Up"}</button>
+                    <button className={"container-button"} type="submit">{isLoading ? "Logging In..." : "Login In"}</button>
                 </form>
                 <p>{message}</p>
             </div>
