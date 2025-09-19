@@ -2,6 +2,7 @@ package com.complex.auction.user;
 
 import com.complex.auction.dto.LoginRequest;
 import com.complex.auction.dto.RegistrationRequest;
+import com.complex.auction.security.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,12 @@ public class UserController {
 
     private final UserService userService;
     private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public UserController(UserService userService, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.userService = userService;
         this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping(value = "/v1/signup", consumes = "application/json")
@@ -39,7 +42,9 @@ public class UserController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        return ResponseEntity.ok("Login successful");
+        String jwt = jwtUtil.generateToken(authentication);
+
+        return ResponseEntity.ok(jwt);
     }
 
     @GetMapping(value = "/v1/findEmail")

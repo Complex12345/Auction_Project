@@ -1,9 +1,16 @@
 import '../css/NavigationBar.css';
 import {Link} from "react-router-dom";
-import React, {useState} from "react";
+import React, { useState, useEffect } from 'react';
 
 export function NavigationBar() {
-    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [searchTerm, setSearchTerm]: boolean = useState<string>('');
+    const [isLoggedIn, setIsLoggedIn]: boolean = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem('jwtToken');
+        setIsLoggedIn(!!token);
+    }, []);
+
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -33,7 +40,11 @@ export function NavigationBar() {
 
             <div className="nav-group right-group">
                 <Link to="/contact" className="nav-link">Contact</Link>
-                <Link to="/login" className="nav-link">Login</Link>
+                {isLoggedIn ?
+                    <Link to="/MyAccount" className="nav-link">Account</Link>
+                    :
+                    <Link to="/register" className="nav-link">Register</Link>
+                }
             </div>
         </nav>
     )

@@ -2,6 +2,7 @@ import React from "react";
 import {useState} from "react"
 import {registerUser} from "../api/UserApi.ts";
 import '../css/RegistrationAndLoginPage.css';
+import {Link} from "react-router-dom";
 
 export function RegistrationPage(): React.ReactElement{
     const [username, setUsername]= useState<string>("");
@@ -50,6 +51,7 @@ export function RegistrationPage(): React.ReactElement{
                     <input className={"container-input"} value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Your username" />
                     <input className={"container-input"} value={email}    onChange={(e) => setEmail(e.target.value)} placeholder="Your email" type="email" />
                     <input className={"container-input"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Your password" type="password" />
+                    <Link to={"/login"} style={{ color: 'blue' }}>Already have an account?</Link>
                     <button className={"container-button"} type="submit">{isLoading ? "Signing Up..." : "Sign Up"}</button>
                 </form>
                 <p>{message}</p>

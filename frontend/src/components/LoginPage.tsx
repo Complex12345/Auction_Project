@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {loginUser} from "../api/UserApi.ts";
 import '../css/RegistrationAndLoginPage.css'
+import { useNavigate } from "react-router-dom";
 
 export function LoginPage(){
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("");
     const [message, setMessage]   = useState("");
     const [isLoading, setIsLoading] = useState(false)
+    const navigate = useNavigate();
 
     const sendRequest = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -20,6 +22,10 @@ export function LoginPage(){
             await loginUser({email, password})
             setMessage("Login in Successful Redirecting...")
             console.log("Logging in user with email: " + email)
+            console.log("JWT token is:" + localStorage.getItem("jwtToken"))
+            await delay(1000);
+            navigate("/")
+
         }
         catch (error) {
             setMessage("Login in failed")
