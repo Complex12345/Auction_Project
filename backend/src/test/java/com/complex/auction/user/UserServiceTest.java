@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,15 +33,57 @@ class UserServiceTest {
 
     private RegistrationRequest registrationRequestPayload;
 
-    @BeforeEach
-    void setUp(){
-        registrationRequestPayload = new RegistrationRequest(
-                "user@email.com",
-                "user",
-                "password"
+
+
+    @Test
+    void saveUser_ShouldSaveUser_WithNoConflicts() {
+        // set up
+        RegistrationRequest registrationRequest = new RegistrationRequest(
+                "john@email.com",
+                "john",
+                "password123"
         );
+
+        when(passwordEncoder.encode(registrationRequest.password())).thenReturn("hashed123");
+        when(userRepository.findUserByUsername("john")).thenReturn(Optional.empty());
+        when(userRepository.findUserByEmail("john@email.com")).thenReturn(Optional.empty());
+
+        User savedUser = new User(
+                "john@email.com",
+                "john",
+                "hashed123"
+        );
+        when(userRepository.save(any(User.class))).thenReturn(savedUser);
+
+        // call test method
+        User result = userService.saveUser(registrationRequest);
+
+
+        //test result output
+        assertEquals("john", result.getUsername());
+        assertEquals("john@email.com", result.getEmail());
+        assertEquals("hashed123", result.getPassword());
+
+
     }
 
+    @Test
+    void findEmailExists() {
+    }
 
+    @Test
+    void findUsernameExists() {
+    }
 
+    @Test
+    void findUser() {
+    }
+
+    @Test
+    void updateUsername() {
+    }
+
+    @Test
+    void updatePassword() {
+    }
 }

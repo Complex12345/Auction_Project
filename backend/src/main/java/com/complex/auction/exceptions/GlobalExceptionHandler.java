@@ -14,26 +14,46 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EmailAlreadyFoundException.class)
     public ResponseEntity<ApiError> handleEmailAlreadyFoundException(EmailAlreadyFoundException ex, HttpServletRequest request){
-        ApiError apiError = new ApiError(
-            request.getRequestURI(),
-                ex.getMessage(),
-                HttpStatus.CONFLICT.value(),
-                LocalDateTime.now()
-        );
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError apiError = getApiError(ex, request, status);
         return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UsernameAlreadyFoundException.class)
     public ResponseEntity<ApiError> handleUsernameAlreadyFoundException(UsernameAlreadyFoundException ex, HttpServletRequest request){
-        ApiError apiError = new ApiError(
-                request.getRequestURI(),
-                ex.getMessage(),
-                HttpStatus.CONFLICT.value(),
-                LocalDateTime.now()
-        );
-        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError apiError = getApiError(ex, request, status);
+        return new ResponseEntity<>(apiError, status);
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UsernameAlreadyFoundException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError apiError = getApiError(ex, request, status);
+        return new ResponseEntity<>(apiError, status);
+    }
 
+    @ExceptionHandler(ItemNotFoundException.class)
+    public ResponseEntity<ApiError> handleItemNotFoundException(UsernameAlreadyFoundException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError apiError = getApiError(ex, request, status);
+        return new ResponseEntity<>(apiError, status);
+    }
 
+    @ExceptionHandler(BidNotFoundException.class)
+    public ResponseEntity<ApiError> handleBidNotFoundException(BidNotFoundException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ApiError apiError = getApiError(ex, request, status);
+        return new ResponseEntity<>(apiError, status);
+
+    }
+
+    private static ApiError getApiError(RuntimeException ex, HttpServletRequest request, HttpStatus httpStatus) {
+        return new ApiError(
+                request.getRequestURI(),
+                ex.getMessage(),
+                httpStatus.value(),
+                LocalDateTime.now()
+        );
+    }
 }

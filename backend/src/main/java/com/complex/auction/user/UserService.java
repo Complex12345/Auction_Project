@@ -3,7 +3,9 @@ package com.complex.auction.user;
 
 import com.complex.auction.dto.RegistrationRequest;
 import com.complex.auction.exceptions.EmailAlreadyFoundException;
+import com.complex.auction.exceptions.ItemNotFoundException;
 import com.complex.auction.exceptions.UsernameAlreadyFoundException;
+import com.complex.auction.item.Item;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,6 +54,7 @@ public class UserService {
     public Optional<User> findUser(String username) {
         return userRepository.findUserByUsername(username);
     }
+
 
 
     public User updateUsername(String oldUsername, String newUsername) {
