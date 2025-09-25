@@ -48,6 +48,14 @@ public class GlobalExceptionHandler {
 
     }
 
+    @ExceptionHandler(BidAmountLowException.class)
+    public ResponseEntity<ApiError> handleBidAmountLowException(BidNotFoundException ex, HttpServletRequest request){
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError apiError = getApiError(ex, request, status);
+        return new ResponseEntity<>(apiError, status);
+
+    }
+
     private static ApiError getApiError(RuntimeException ex, HttpServletRequest request, HttpStatus httpStatus) {
         return new ApiError(
                 request.getRequestURI(),

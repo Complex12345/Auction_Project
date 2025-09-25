@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface BidRepository extends JpaRepository<Bid, Long> {
 
-    Optional<Bid> findByItemAndBidder(Item item, User bidder);
+    Optional<Bid> findFirstByItemAndBidder(Item item, User bidder);
     Optional<Bid> findFirstByItemOrderByAmountDesc(Item item);
     Optional<Bid> removeBidByBidder_Id(Long bidderId);
 }

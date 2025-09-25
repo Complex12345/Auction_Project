@@ -89,7 +89,11 @@ public class ItemService {
 
         Item item = findItem(bidRequest.itemId());
 
-        Optional<Bid> existingBidOptional = bidRepository.findByItemAndBidder(item, bidder);
+        Optional<Bid> existingBidOptional = bidRepository.findFirstByItemAndBidder(item, bidder);
+
+        if(bidRequest.bidderAmount() < item.getStartingBid()){
+
+        }
 
         if (existingBidOptional.isPresent()) {
             Bid existingBid = existingBidOptional.get();
