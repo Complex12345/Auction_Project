@@ -25,8 +25,8 @@ export function MyAccountPage() {
         e.preventDefault();
         setMessage('');
         try {
-            // Note: The backend updatePassword method requires the username
-            const currentUsername = ""; // You need to get the current username from context or a global state
+            
+            const currentUsername = "";
             await updatePassword(currentUsername, newPassword);
             setMessage('Password updated successfully!');
             setOldPassword("");

@@ -1,15 +1,17 @@
 import '../css/NavigationBar.css';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
 
 export function NavigationBar() {
-    const [searchTerm, setSearchTerm]: boolean = useState<string>('');
-    const [isLoggedIn, setIsLoggedIn]: boolean = useState(false);
+    const [searchTerm, setSearchTerm] = useState<string>('');
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+    const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem('jwtToken');
         setIsLoggedIn(!!token);
-    }, []);
+    }, [location]);
 
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {

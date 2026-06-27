@@ -1,15 +1,17 @@
-FROM openjdk:21
+FROM eclipse-temurin:25-jdk
 
 WORKDIR /app
 
 COPY .mvn .mvn
 COPY mvnw pom.xml ./
 
+RUN chmod +x mvnw
+
 RUN ./mvnw dependency:go-offline -B
 
 COPY src ./src
 
-RUN ./mvnw clean install -DskipTests
+RUN ./mvnw clean package -DskipTests
 
 EXPOSE 8080
 

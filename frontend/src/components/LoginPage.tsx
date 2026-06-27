@@ -23,7 +23,6 @@ export function LoginPage(){
             setMessage("Login in Successful Redirecting...")
             console.log("Logging in user with email: " + email)
             console.log("JWT token is:" + localStorage.getItem("jwtToken"))
-            await delay(1000);
             navigate("/")
 
         }
