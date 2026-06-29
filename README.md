@@ -37,7 +37,7 @@ A full-stack auction platform built using **Spring Boot**, **React**, **TypeScri
 
 * JUnit 5
 * Mockito
-* H2 in-memory database for tests
+* H2 in-memory database for testing
 
 ---
 

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.complex.auction.dto.BidHistoryResponse;
 import com.complex.auction.dto.BidRequest;
 import com.complex.auction.dto.CreateItemRequest;
 import com.complex.auction.security.AuthUtil;
@@ -111,14 +112,21 @@ public class ItemController {
     }
 
     @GetMapping("/v1/getBidHistory")
-    public ResponseEntity<List<Bid>> getBidHistory(Authentication authentication) {
+    public ResponseEntity<List<BidHistoryResponse>> getBidHistory(Authentication authentication) {
         UUID userId = AuthUtil.extractUUID(authentication);
 
         Optional<List<Bid>> bidList = itemService.getBidList(userId);
 
         return bidList
+                .map(bids -> bids.stream()
+                        .map(bid -> new BidHistoryResponse(
+                                bid.getId(),
+                                bid.getItem().getId(),
+                                bid.getAmount(),
+                                bid.getTimestamp()))
+                        .toList())
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/v1/myItems")

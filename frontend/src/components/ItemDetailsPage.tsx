@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getItem } from "../api/ItemApi";
 import type { Item } from "../types/Item";
+import type { Bid } from "../types/Bid";
+import { getHighestBid, getItem } from "../api/ItemApi";
 import { PlaceBid } from "./PlaceBid";
+import "../css/ItemDetailsPage.css";
 
 export function ItemDetailsPage() {
     const { id } = useParams();
 
     const [item, setItem] = useState<Item | null>(null);
+    const [highestBid, setHighestBid] = useState<Bid | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadItem = async () => {
-            if (!id) return;
+            if (!id) {
+                return;
+            }
 
             try {
-                const response = await getItem(Number(id));
-                setItem(response);
+                const itemId = Number(id);
+
+                const [itemResponse, highestBidResponse] = await Promise.all([
+                    getItem(itemId),
+                    getHighestBid(itemId)
+                ]);
+
+                setItem(itemResponse);
+                setHighestBid(highestBidResponse);
+            } catch (error) {
+                console.error(error);
             } finally {
                 setLoading(false);
             }
@@ -26,38 +40,79 @@ export function ItemDetailsPage() {
     }, [id]);
 
     if (loading) {
-        return <h2>Loading...</h2>;
+        return (
+            <div className="item-page">
+                <h2>Loading...</h2>
+            </div>
+        );
     }
 
     if (!item) {
-        return <h2>Item not found.</h2>;
+        return (
+            <div className="item-page">
+                <h2>Item not found.</h2>
+            </div>
+        );
     }
 
     return (
         <div className="item-page">
-            <img
-                src={item.image}
-                alt={item.name}
-                width={400}
-            />
+            <div className="item-image-container">
+                <img
+                    className="item-image"
+                    src={`data:image/jpeg;base64,${item.image}`}
+                    alt={item.name}
+                />
+            </div>
 
-            <h1>{item.name}</h1>
+            <div className="item-info">
+                <h1 className="item-title">{item.name}</h1>
 
-            <p>{item.description}</p>
+                <p className="item-description">
+                    {item.description}
+                </p>
 
-            <h3>Category</h3>
-            <p>{item.category}</p>
+                <div className="item-details">
+                    <div className="detail-card">
+                        <span className="detail-label">Category</span>
+                        <span className="detail-value">
+                            {item.category}
+                        </span>
+                    </div>
 
-            <h3>Condition</h3>
-            <p>{item.condition}</p>
+                    <div className="detail-card">
+                        <span className="detail-label">Condition</span>
+                        <span className="detail-value">
+                            {item.condition}
+                        </span>
+                    </div>
 
-            <h3>Starting Bid</h3>
-            <p>${item.startingBid}</p>
+                    <div className="detail-card">
+                        <span className="detail-label">Starting Bid</span>
+                        <span className="detail-value">
+                            ${item.startingBid.toFixed(2)}
+                        </span>
+                    </div>
 
-            <h3>Current Bid</h3>
-            <p>${item.startingBid}</p>
+                    <div className="detail-card">
+                        <span className="detail-label">Current Bid</span>
+                        <span className="detail-value">
+                            $
+                            {(highestBid?.amount ?? item.startingBid).toFixed(2)}
+                        </span>
+                    </div>
+                </div>
 
-            <PlaceBid itemId={item.id}/>
+                <div className="bid-section">
+                    <h2 className="bid-title">Place Your Bid</h2>
+
+                    <p className="bid-subtitle">
+                        Enter an amount higher than the current highest bid.
+                    </p>
+
+                    <PlaceBid itemId={item.id} />
+                </div>
+            </div>
         </div>
     );
 }

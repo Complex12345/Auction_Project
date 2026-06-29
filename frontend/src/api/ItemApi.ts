@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { Item } from "../types/Item";
+import type { Bid } from "../types/Bid";
 
 const BASE_URL = "http://localhost:8080";
 
@@ -10,6 +11,8 @@ const apiWithAuth = axios.create({
 apiWithAuth.interceptors.request.use(
     config => {
         const token = localStorage.getItem("jwtToken");
+        console.log(token);
+        console.log(token?.length);
 
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -76,4 +79,13 @@ export const updateItemDescription = async (
     );
 
     return response.data;
+};
+
+export const getHighestBid = async (id: number): Promise<Bid | null> => {
+    try {
+        const response = await apiWithAuth.get<Bid>(`/item/v1/maxBid/${id}`);
+        return response.data;
+    } catch {
+        return null;
+    }
 };

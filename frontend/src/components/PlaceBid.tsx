@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { placeBid } from "../api/BidApi";
 
 type Props = {
     itemId: number;
@@ -8,26 +9,48 @@ export function PlaceBid({ itemId }: Props) {
     const [amount, setAmount] = useState("");
 
     const submitBid = async () => {
-        console.log("Item:", itemId);
-        console.log("Bid:", amount);
+        if (!amount) {
+            return;
+        }
 
-        // TODO: call your bid API
+        try {
+            await placeBid({
+                itemId,
+                bidderAmount: Number(amount),
+            });
+
+            alert("Bid placed successfully!");
+            setAmount("");
+        } catch (error) {
+            console.error(error);
+            alert("Failed to place bid.");
+        }
     };
 
     return (
-        <div>
-            <h2>Place Bid</h2>
-
+        <form
+            className="bid-form"
+            onSubmit={(e) => {
+                e.preventDefault();
+                submitBid();
+            }}
+        >
             <input
+                className="bid-input"
                 type="number"
+                min="0"
+                step="0.01"
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
-                placeholder="Enter bid"
+                placeholder="Enter your bid"
             />
 
-            <button onClick={submitBid}>
+            <button
+                className="bid-button"
+                type="submit"
+            >
                 Place Bid
             </button>
-        </div>
+        </form>
     );
 }
