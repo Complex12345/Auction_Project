@@ -4,7 +4,7 @@ A full-stack auction platform built using **Spring Boot**, **React**, **TypeScri
 
 
 ![Home Page](images/exampleimg.png)
-![Item Details](images/bid.png)
+![Upload](images/upload.png)
 ![User Dashboard](images/inventory.png)
 ![Bid](images/bid.png)
 
