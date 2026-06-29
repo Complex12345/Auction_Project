@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { createItem } from "../api/ItemApi";
-import "../css/RegistrationAndLoginPage.css";
+import "../css/UploadItem.css";
 
 export function UploadItem() {
 
@@ -74,77 +74,79 @@ export function UploadItem() {
     };
 
     return (
-        <div className="container">
+        <div className="upload-container">
+            <div className="upload-card">
 
-            <h2>Upload Auction Item</h2>
+                <h2>Upload Auction Item</h2>
 
-            <form className="form-layout" onSubmit={uploadItem}>
+                <form className="upload-form" onSubmit={uploadItem}>
 
-                <input
-                    placeholder="Item Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                />
+                    <input
+                        placeholder="Item Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
 
-                <textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
+                    <textarea
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        required
+                    />
 
-                <input
-                    placeholder="Category"
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    required
-                />
+                    <input
+                        placeholder="Category"
+                        value={category}
+                        onChange={(e) => setCategory(e.target.value)}
+                        required
+                    />
 
-                <input
-                    placeholder="Condition"
-                    value={condition}
-                    onChange={(e) => setCondition(e.target.value)}
-                    required
-                />
+                    <input
+                        placeholder="Condition"
+                        value={condition}
+                        onChange={(e) => setCondition(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="Starting Bid"
-                    value={startingBid}
-                    onChange={(e) => setStartingBid(e.target.value)}
-                    required
-                />
+                    <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Starting Bid"
+                        value={startingBid}
+                        onChange={(e) => setStartingBid(e.target.value)}
+                        required
+                    />
 
-                <input
-                    type="datetime-local"
-                    value={auctionEndTime}
-                    onChange={(e) => setAuctionEndTime(e.target.value)}
-                    required
-                />
+                    <input
+                        type="datetime-local"
+                        value={auctionEndTime}
+                        onChange={(e) => setAuctionEndTime(e.target.value)}
+                        required
+                    />
 
-                <input
-                    id="item-image"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                        if (e.target.files && e.target.files.length > 0) {
-                            setImage(e.target.files[0]);
-                        }
-                    }}
-                    required
-                />
+                    <input
+                        id="item-image"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                            if (e.target.files && e.target.files.length > 0) {
+                                setImage(e.target.files[0]);
+                            }
+                        }}
+                        required
+                    />
 
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? "Uploading..." : "Upload Item"}
-                </button>
+                    <button type="submit" disabled={isLoading}>
+                        {isLoading ? "Uploading..." : "Upload Item"}
+                    </button>
 
-                {message && <p>{message}</p>}
+                    {message && <p className="upload-message">{message}</p>}
 
-            </form>
+                </form>
 
+            </div>
         </div>
     );
 }

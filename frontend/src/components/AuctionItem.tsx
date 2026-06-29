@@ -1,7 +1,7 @@
 import "../css/AuctionItem.css";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import type {Item} from "../types/Item.ts";
+import type { Item } from "../types/Item";
 
 type AuctionItemProps = {
     item: Item;
@@ -10,6 +10,21 @@ type AuctionItemProps = {
 export function AuctionItem({ item }: AuctionItemProps) {
     const itemUrl = `/items/${item.id}`;
     const auctionEndTime = new Date(item.auctionEndTime);
+
+    const getCountdown = () => {
+        const total = auctionEndTime.getTime() - Date.now();
+
+        if (total <= 0) {
+            return "Auction Ended";
+        }
+
+        const seconds = Math.floor((total / 1000) % 60);
+        const minutes = Math.floor((total / (1000 * 60)) % 60);
+        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
+        const days = Math.floor(total / (1000 * 60 * 60 * 24));
+
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    };
 
     const [countdown, setCountdown] = useState(getCountdown());
 
@@ -21,31 +36,19 @@ export function AuctionItem({ item }: AuctionItemProps) {
         return () => clearInterval(timer);
     }, []);
 
-    function getCountdown() {
-        const total = auctionEndTime.getTime() - new Date().getTime();
-        if (total <= 0) {
-            return "Auction Ended";
-        }
-        const seconds = Math.floor((total / 1000) % 60);
-        const minutes = Math.floor((total / 1000 / 60) % 60);
-        const hours = Math.floor((total / (1000 * 60 * 60)) % 24);
-        const days = Math.floor(total / (1000 * 60 * 60 * 24));
-        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
-
-    console.log(item);         
-    console.log(item.image);   
-
     return (
         <Link to={itemUrl} className="auction-item-link">
             <div className="auction-item-card">
+
                 <div className="item-main-details">
                     <p className="item-title">{item.name}</p>
-<img
-    className="item-image"
-    src={`data:image/png;base64,${item.image}`}
-    alt={item.name}
-/>
+
+                    <img
+                        className="item-image"
+                        src={`data:image/jpeg;base64,${item.image}`}
+                        alt={item.name}
+                    />
+
                     <p className="item-description">{item.description}</p>
                 </div>
 
@@ -60,6 +63,7 @@ export function AuctionItem({ item }: AuctionItemProps) {
                         <p className="detail-value">{countdown}</p>
                     </div>
                 </div>
+
             </div>
         </Link>
     );

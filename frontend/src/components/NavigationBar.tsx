@@ -30,7 +30,7 @@ export function NavigationBar() {
                 <Link to="/about" className="nav-link">About</Link>
             </div>
 
-            <form className="search-form" onSubmit={handleSearchSubmit}>
+            {/* <form className="search-form" onSubmit={handleSearchSubmit}>
                 <input
                     type="text"
                     placeholder="Search..."
@@ -38,13 +38,13 @@ export function NavigationBar() {
                     onChange={handleSearchChange}
                 />
                 <button type="submit">Search</button>
-            </form>
+            </form> */}
 
             <div className="nav-group right-group">
                 {isLoggedIn &&
                     <Link to="/dashboard" className="nav-link">DashBoard</Link>
                 }
-                <Link to="/contact" className="nav-link">Contact</Link>
+                {/* <Link to="/contact" className="nav-link">Contact</Link> */}
                 {isLoggedIn ?
                     <Link to="/accountSettings" className="nav-link">Account</Link>
                     :

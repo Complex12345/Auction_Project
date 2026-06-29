@@ -2,6 +2,11 @@
 
 A full-stack auction platform built using **Spring Boot**, **React**, **TypeScript**, and **PostgreSQL**. This project allows users to register, log in using JWT authentication, browse auction listings, place bids, and manage their accounts.
 
+
+![Home Page](images/exampleimg.png)
+![Item Details](images/bid.png)
+![User Dashboard](images/inventory.png)
+
 ## Features
 
 ### User Management
