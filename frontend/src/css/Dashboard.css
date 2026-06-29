@@ -1,0 +1,83 @@
+/* Dashboard.css */
+
+.dashboard-container {
+    width: 100%;
+    margin: 0;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.auction-items-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.dashboard-header button,
+.upload-button {
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 0;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.dashboard-header button:hover,
+.upload-button:hover {
+    background-color: #1d4ed8;
+}
+
+.active-tab {
+    background-color: #1e40af !important;
+}
+
+.dashboard-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+.dashboard-content h2 {
+    margin: 0 0 20px 0;
+}
+
+.dashboard-content p {
+    margin: 0;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .dashboard-container {
+        padding: 20px;
+    }
+
+    .dashboard-header {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .auction-items-header {
+        flex-wrap: wrap;
+    }
+
+    .dashboard-header button,
+    .upload-button {
+        width: fit-content;
+    }
+}

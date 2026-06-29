@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Component
-public class BeanChecker { // Class used for debugging
+public class BeanChecker {
 
     private static final Logger logger = LogManager.getLogger(BeanChecker.class);
 

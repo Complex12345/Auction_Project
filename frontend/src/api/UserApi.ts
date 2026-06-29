@@ -1,4 +1,6 @@
 import axios from "axios";
+import type { UserBids } from "../types/UserBids";
+
 
 // @ts-ignore
 const BASE_URL_DEV = "http://localhost:8080"
@@ -48,11 +50,56 @@ export const loginUser = async (data: {
     return response;
 };
 
-export const updateUsername = async (oldUsername: string, newUsername: string) => {
-    return apiWithAuth.patch("/user/v1/update/username", { oldUsername, newUsername });
+export const updateUsername = (newUsername: string) => {
+    return apiWithAuth.patch("/user/v1/update/username", {
+        newUsername
+    });
 };
 
-export const updatePassword = async (username: string, newPassword: string) => {
-    return apiWithAuth.patch("/user/v1/update/password", { username, newPassword });
+export const updatePassword = (newPassword: string) => {
+    return apiWithAuth.patch("/user/v1/update/password", {
+        newPassword
+    });
 };
+
+
+export const getUserHistory = async (): Promise<UserBids[]> => {
+    const response = await apiWithAuth.get<UserBids[]>("/bids/v1/bidhistory");
+    return response.data;
+};
+
+export const getBidHistory = async (): Promise<UserBids[]> => {
+    const response = await apiWithAuth.get<UserBids[]>("/bids/v1/bidhistory");
+    return response.data;
+};
+
+export const checkEmailExists = async (email: string): Promise<boolean> => {
+    const response = await api.get("/user/v1/findEmail", {
+        data: email
+    });
+
+    return response.data;
+};
+
+export const checkUsernameExists = async (username: string): Promise<boolean> => {
+    const response = await api.get("/user/v1/findUsername", {
+        data: username
+    });
+
+    return response.data;
+};
+
+export const logoutUser = () => {
+    localStorage.removeItem("jwtToken");
+};
+
+export const isLoggedIn = (): boolean => {
+    return localStorage.getItem("jwtToken") !== null;
+};
+
+export const getJwtToken = (): string | null => {
+    return localStorage.getItem("jwtToken");
+};
+
+
 export default api;

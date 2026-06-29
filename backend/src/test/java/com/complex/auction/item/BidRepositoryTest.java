@@ -1,18 +1,19 @@
 package com.complex.auction.item;
 
-import com.complex.auction.user.User;
-import com.complex.auction.user.UserRepository;
+import java.util.List;
+import java.util.Optional;
+
 import org.junit.jupiter.api.AfterEach;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
+import com.complex.auction.user.User;
+import com.complex.auction.user.UserRepository;
 
 @DataJpaTest
 @ActiveProfiles("test")
@@ -57,6 +58,7 @@ class BidRepositoryTest {
         createBid(item, bidder2, 500.0);
         createBid(item, bidder3, 1000.0);
     }
+
     private User createUser(String username, String email) {
         User user = new User();
         user.setUsername(username);
@@ -107,10 +109,11 @@ class BidRepositoryTest {
     }
 
     @Test
-    void removeBidByBidder_Id() {
+    void deleteByBidder_Id() {
         User bidder = userRepository.findAll().get(0);
-        bidRepository.removeBidByBidder_Id(bidder.getId());
 
-        assertTrue(bidRepository.findAll().isEmpty());
+        bidRepository.deleteByBidder_Id(bidder.getId());
+
+        assertEquals(2, bidRepository.findAll().size());
     }
 }

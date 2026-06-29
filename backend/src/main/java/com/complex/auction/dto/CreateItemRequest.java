@@ -1,8 +1,9 @@
 package com.complex.auction.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import java.time.LocalDateTime;
+import java.util.UUID;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public record CreateItemRequest(
         String name,
@@ -11,8 +12,6 @@ public record CreateItemRequest(
         MultipartFile image,
         String category,
         String condition,
-        Double startingBid,
-        Long sellerId
+        Double startingBid
 ) {
 }
-

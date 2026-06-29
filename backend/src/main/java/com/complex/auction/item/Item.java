@@ -1,14 +1,27 @@
 package com.complex.auction.item;
 
-import com.complex.auction.user.User;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.complex.auction.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "item")
@@ -26,39 +39,40 @@ public class Item {
 
     private LocalDateTime auctionEndTime;
 
-    @Lob
-    @Column(name = "image")
+    @Column(name = "image", columnDefinition = "bytea")
     private byte[] image;
 
     private String category;
 
-    private String condition;  // example: Good, Fair, Bad
+    private String condition;
 
     @NotNull(message = "Must have a starting bid")
     private Double startingBid;
 
     private int clicks = 0;
 
-    private int views = 0;  // persisted view count
+    private int views = 0;
 
     @Transient
-    private AtomicInteger inMemViews = new AtomicInteger(0); // fast in-memory counter
-
+    @JsonIgnore
+    private AtomicInteger inMemViews = new AtomicInteger(0);
 
     @ManyToOne
     @JoinColumn(name = "seller_id")
     @NotNull
+    @JsonIgnore
     private User seller;
 
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<Bid> bids;
 
     public Item() {
     }
 
     public Item(String name, String description, LocalDateTime auctionEndTime,
-                byte[] image, String category, String condition,
-                Double startingBid, User seller) {
+            byte[] image, String category, String condition,
+            Double startingBid, User seller) {
         this.name = name;
         this.description = description;
         this.auctionEndTime = auctionEndTime;
@@ -69,7 +83,6 @@ public class Item {
         this.seller = seller;
     }
 
-
     public synchronized void incrementView() {
         views++;
         inMemViews.incrementAndGet();
@@ -78,7 +91,6 @@ public class Item {
     public void flushInMemViews() {
         this.views += inMemViews.getAndSet(0);
     }
-
 
     public Long getId() {
         return id;

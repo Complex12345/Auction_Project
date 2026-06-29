@@ -41,9 +41,12 @@ export function NavigationBar() {
             </form>
 
             <div className="nav-group right-group">
+                {isLoggedIn &&
+                    <Link to="/dashboard" className="nav-link">DashBoard</Link>
+                }
                 <Link to="/contact" className="nav-link">Contact</Link>
                 {isLoggedIn ?
-                    <Link to="/MyAccount" className="nav-link">Account</Link>
+                    <Link to="/accountSettings" className="nav-link">Account</Link>
                     :
                     <Link to="/register" className="nav-link">Register</Link>
                 }

@@ -1,18 +1,16 @@
 package com.complex.auction.user;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 
-import com.complex.auction.dto.RegistrationRequest;
-import com.complex.auction.exceptions.EmailAlreadyFoundException;
-import com.complex.auction.exceptions.ItemNotFoundException;
-import com.complex.auction.exceptions.UsernameAlreadyFoundException;
-import com.complex.auction.item.Item;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Locale;
-import java.util.Optional;
+import com.complex.auction.dto.RegistrationRequest;
+import com.complex.auction.exceptions.EmailAlreadyFoundException;
+import com.complex.auction.exceptions.UsernameAlreadyFoundException;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -35,10 +33,13 @@ public class UserService {
         User registerUser = new User(
                 registrationRequest.email(),
                 registrationRequest.username(),
-                passwordEncoder.encode(registrationRequest.password())
-        );
+                passwordEncoder.encode(registrationRequest.password()));
 
         return userRepository.save(registerUser);
+    }
+
+    public Optional<User> findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email);
     }
 
     public boolean findEmailExists(String email) {
@@ -55,40 +56,30 @@ public class UserService {
         return userRepository.findUserByUsername(username);
     }
 
+    public User updateUsername(UUID userId, String newUsername) {
 
+        if (userRepository.existsByUsername(newUsername)) {
+            throw new UsernameAlreadyFoundException(
+                    "Another user with this username already exists");
+        }
 
-    public User updateUsername(String oldUsername, String newUsername) {
-        Optional<User> userWithUsernameExists = userRepository.findUserByUsername(newUsername);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        if (userWithUsernameExists.isPresent())
-            throw new UsernameAlreadyFoundException("Another user with this username exists");
+        user.setUsername(newUsername);
+        user.setLastUpdated(LocalDateTime.now());
 
-        Optional<User> currentUser = findUser(oldUsername);
-
-        if (currentUser.isEmpty())
-            throw new UsernameNotFoundException("User not found: " + currentUser);
-
-        User userToUpdate = currentUser.get();
-        userToUpdate.setUsername(newUsername);
-
-        userToUpdate.setLastUpdated(LocalDateTime.now());
-
-        return userRepository.save(userToUpdate);
+        return userRepository.save(user);
     }
 
-    public User updatePassword(String username, String newPassword) {
-        Optional<User> currentUser = userRepository.findUserByUsername(username);
+    public User updatePassword(UUID userId, String newPassword) {
 
-        if (currentUser.isEmpty())
-            throw new UsernameNotFoundException("User not found: " + username);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setLastUpdated(LocalDateTime.now());
 
-        User userToUpdate = currentUser.get();
-        String encryptedPassword = passwordEncoder.encode(newPassword);
-        userToUpdate.setPassword(encryptedPassword);
-
-        userToUpdate.setLastUpdated(LocalDateTime.now());
-
-        return userRepository.save(userToUpdate);
+        return userRepository.save(user);
     }
 }

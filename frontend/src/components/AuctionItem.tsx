@@ -33,19 +33,28 @@ export function AuctionItem({ item }: AuctionItemProps) {
         return `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
 
+    console.log(item);         
+    console.log(item.image);   
+
     return (
         <Link to={itemUrl} className="auction-item-link">
             <div className="auction-item-card">
                 <div className="item-main-details">
                     <p className="item-title">{item.name}</p>
-                    <img className="item-image" src={item.imageURL} alt={item.name} />
+<img
+    className="item-image"
+    src={`data:image/png;base64,${item.image}`}
+    alt={item.name}
+/>
                     <p className="item-description">{item.description}</p>
                 </div>
+
                 <div className="item-details-grid">
                     <div className="detail-group">
                         <p className="detail-label">{item.category}</p>
                         <p className="detail-value">{item.condition}</p>
                     </div>
+
                     <div className="detail-group">
                         <p className="detail-label">Time Remaining</p>
                         <p className="detail-value">{countdown}</p>
